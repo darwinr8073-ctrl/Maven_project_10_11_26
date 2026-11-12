@@ -1,4 +1,3 @@
-
 name: Maven Docker CI Pipeline
 
 on:
@@ -30,9 +29,12 @@ jobs:
       - name: Docker Image Build
         run: docker build -t maven-project:latest .
 
-      - name: Verify Docker Image
-        run: docker images maven-project:latest
+      - name: Docker Container Test
+        run: |
+          output=$(docker run --rm maven-project:latest)
+          echo "$output"
+          echo "$output" | grep -F "Hello from Maven + Jenkins!"
+          echo "$output" | grep -F "2 + 3 = 5"
 
       - name: Pipeline Success
         run: echo "Maven and Docker CI completed successfully!"
-
